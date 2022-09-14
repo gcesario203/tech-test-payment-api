@@ -11,11 +11,12 @@ namespace unitTests.Utils.MockBuilders
     {
         public OrderController OrderController
         {
-            get => _controller;
-            set
+            get
             {
-                if(_controller == null)
+                if (_controller == null)
                     _controller = BuildController();
+
+                return _controller;
             }
         }
 
@@ -35,8 +36,8 @@ namespace unitTests.Utils.MockBuilders
 
         protected override void FillRepositoryData()
         {
-            foreach(var order in GenerateOrders())
-                _controller.Create(order);
+            foreach (var order in GenerateOrders())
+                OrderController.Create(order);
         }
     }
 }
