@@ -1,18 +1,15 @@
 
 using implementation.Models.Abstractions;
+using implementation.Models.Enums;
 
 namespace implementation.Models
 {
     public class Order : BaseEntity
     {
-        public int SellerId { get; private set; }
+        public Seller Seller { get; set; }
 
-        public List<int> ProductIds { get; private set; }
+        public virtual ICollection<Product> Products { get; set; }
 
-        public Order(int id, int sellerId, List<int> products) : base(id)
-        {
-            SellerId = sellerId;
-            ProductIds = products;
-        }
+        public OrderStatus Status {get; set;}
     }
 }
