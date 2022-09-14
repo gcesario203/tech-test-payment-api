@@ -2,7 +2,7 @@ using implementation.Data.ResponseObjects.Interfaces;
 using implementation.Data.ResponseObjects;
 using implementation.Models;
 using implementation.Models.Enums;
-using static implementation.Utils.Helpers.ValidationHelpers;
+using static implementation.Utils.Extensions.SellerExtensions;
 
 namespace implementation.Data
 {
@@ -16,7 +16,7 @@ namespace implementation.Data
 
         public void Validate(ref ResultResponse response)
         {
-            Seller.ValidateSellerExtension(response.Errors, response.RequiredFields);
+            Seller.ValidateSeller(response.Errors, response.RequiredFields);
             
             if(Products?.Count == 0)
                 response.SetErrors("É necessário ter pelo menos um produto na venda");
