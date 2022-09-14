@@ -1,3 +1,5 @@
+using AutoMapper;
+using implementation.Infrastructure.Config;
 using implementation.Models;
 using implementation.Repositories;
 using implementation.Repositories.Interfaces;
@@ -5,6 +7,12 @@ using implementation.Repositories.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
+
+builder.Services.AddSingleton(mapper);
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IRepository<Order>, OrderInMemoryRepository>();
 

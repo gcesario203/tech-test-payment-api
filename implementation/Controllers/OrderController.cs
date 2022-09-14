@@ -1,3 +1,5 @@
+using AutoMapper;
+using implementation.DataTransferObjects;
 using implementation.Models;
 using implementation.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +12,12 @@ namespace implementation.Controllers
     {
         private readonly IRepository<Order> _repository;
 
-        public OrderController(IRepository<Order> repository)
+        private readonly IMapper _mapper;
+
+        public OrderController(IRepository<Order> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
@@ -27,16 +32,17 @@ namespace implementation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Order item)
+        public IActionResult Create([FromBody] OrderDTO item)
         {
-            _repository.Create(item);
-            return CreatedAtRoute("GetById", item.Id, item);
+            var mappedItem = _mapper.Map<Order>(item);
+            _repository.Create(_mapper.Map<Order>(mappedItem));
+            return CreatedAtRoute("GetById", mappedItem.Id, item);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Order item)
+        public IActionResult Update(int id, [FromBody] OrderDTO item)
         {
-            _repository.Update(id, item);
+            _repository.Update(id, _mapper.Map<Order>(item));
 
             return Ok();
         }
