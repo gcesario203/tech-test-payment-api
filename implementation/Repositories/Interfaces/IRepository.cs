@@ -1,18 +1,17 @@
-using System.Linq.Expressions;
 using implementation.Models.Abstractions;
 
 namespace implementation.Repositories.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : BaseEntity
     {
-        Task<IEnumerable<TEntity>> GetAll();
+        IEnumerable<TEntity> GetAll();
 
-        Task<TEntity> GetById(int id);
+        TEntity GetById(int id);
 
-        Task Create(TEntity item);
+        void Create(TEntity item);
 
-        Task Update(int id, TEntity item);
+        void Update(int id, TEntity item);
 
-        Task Delete(int id);
+        void Delete(int id);
     }
 }

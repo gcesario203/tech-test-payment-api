@@ -11,35 +11,42 @@ namespace implementation.Repositories.Abstractions
         {
             _entities = new List<TEntity>();
         } 
-        public virtual async Task Create(TEntity item)
+        public virtual void Create(TEntity item)
         {
+            var newId = 1;
+
+            if(GetAll().Count() > 0)
+                newId = _entities.Max(entity => entity.Id) + 1;
+
+            item.Id = newId;
+
             _entities.Add(item);
         }
 
-        public virtual async Task Delete(int id)
+        public virtual void Delete(int id)
         {
             _entities.RemoveAll(entity => entity.Id == id);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAll()
+        public virtual IEnumerable<TEntity> GetAll()
         {
             return _entities;
         }
 
-        public virtual async Task<TEntity> GetById(int id)
+        public virtual TEntity GetById(int id)
         {
             return _entities.FirstOrDefault(entity => entity.Id == id);
         }
 
-        public virtual async Task Update(int id, TEntity item)
+        public virtual void Update(int id, TEntity item)
         {
-            var entityToChange = await GetById(id);
+            var entityToChange = GetById(id);
 
             if(entityToChange == null)
                 return;
 
-            await Delete(id);
-            await Create(item);
+            Delete(id);
+            Create(item);
         }
     }
 }
