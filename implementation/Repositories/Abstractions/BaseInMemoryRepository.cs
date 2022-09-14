@@ -4,7 +4,7 @@ using static implementation.Utils.Helpers.DataBaseHelpers;
 
 namespace implementation.Repositories.Abstractions
 {
-    public class BaseInMemoryRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+    public abstract class BaseInMemoryRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
         private List<TEntity> _entities;
 
