@@ -21,5 +21,13 @@ namespace implementation.Data
             if(Products?.Count == 0)
                 response.SetErrors("É necessário ter pelo menos um produto na venda");
         }
+
+        public OrderDTO(){}
+
+        public OrderDTO(Seller seller, ICollection<Product> products)
+        {
+            Seller = seller;
+            Products = products;
+        }
     }
 }
