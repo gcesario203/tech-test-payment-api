@@ -14,7 +14,7 @@ namespace implementation.Repositories.Abstractions
         }
         public virtual bool Create(TEntity item)
         {
-            item.Id = GetInMemoryCollectionNewId(_entities.Count > 0 ? _entities.Max(entity => entity.Id) : 1);
+            item.Id = GetInMemoryCollectionNewId(_entities.Count > 0 ? _entities.Max(entity => entity.Id) : 0);
             item.CreatedAt = DateTime.Now;
 
             _entities.Add(item);

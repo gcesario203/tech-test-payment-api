@@ -17,10 +17,10 @@ namespace implementation.Utils.Helpers
 
             CheckRequiredFields(requiredFields, "Campo obrigatório", seller.Cpf, seller.Email, seller.Name, seller.Telphone);
 
-            if(isValidEmail(seller.Email))
+            if(!isValidEmail(seller.Email))
                 errors.Add("Email inválido");
 
-            if(IsValidCpf(seller.Cpf))
+            if(!IsValidCpf(seller.Cpf))
                 errors.Add("Cpf inválido");
         }
 
