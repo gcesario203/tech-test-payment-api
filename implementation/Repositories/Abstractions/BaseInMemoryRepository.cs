@@ -45,8 +45,10 @@ namespace implementation.Repositories.Abstractions
             if(entityToChange == null)
                 return;
 
+            entityToChange.UpdatedAt = DateTime.Now;
+
             Delete(id);
-            Create(item);
+            Create(entityToChange);
         }
     }
 }
