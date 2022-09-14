@@ -6,27 +6,27 @@ namespace implementation.Repositories
 {
     public class OrderInMemoryRepository : BaseInMemoryRepository<Order>
     {
-        public override void Create(Order item)
+        public override bool Create(Order item)
         {
             if (item.Products.Count == 0)
-                return;
+                return false;
 
             item.Status = Models.Enums.OrderStatus.WaitingPayment;
 
-            base.Create(item);
+            return base.Create(item);
         }
 
-        public override void Update(int id, Order item)
+        public override bool Update(int id, Order item)
         {
             if (item.Products.Count == 0)
-                return;
+                return false;
 
             var orderToChange = GetById(id);
 
             if (!CanChangeOrderStatus(orderToChange.Status, item.Status))
-                return;
+                return false;
 
-            base.Update(id, item);
+            return base.Update(id, item);
         }
     }
 }

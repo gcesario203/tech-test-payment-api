@@ -8,10 +8,10 @@ namespace implementation.Repositories.Interfaces
 
         Task<TEntity> GetById(int id);
 
-        Task Create(TEntity item);
+        Task<bool> Create(TEntity item);
 
-        Task Update(int id, TEntity item);
+        Task<bool> Update(int id, TEntity item);
 
-        Task Delete(int id);
+        Task<bool> Delete(int id);
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace implementation.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
         private readonly IRepository<Order> _repository;
@@ -35,16 +35,20 @@ namespace implementation.Controllers
         public IActionResult Create([FromBody] OrderDTO item)
         {
             var mappedItem = _mapper.Map<Order>(item);
-            _repository.Create(_mapper.Map<Order>(mappedItem));
-            return CreatedAtRoute("GetById", mappedItem.Id, item);
+            
+            if(_repository.Create(_mapper.Map<Order>(mappedItem)))
+                return CreatedAtRoute("GetById", mappedItem.Id, item);
+
+            return BadRequest();
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] OrderDTO item)
         {
-            _repository.Update(id, _mapper.Map<Order>(item));
+            if(_repository.Update(id, _mapper.Map<Order>(item)))
+                return Ok();
 
-            return Ok();
+            return BadRequest();
         }
     }
 }

@@ -8,10 +8,10 @@ namespace implementation.Repositories.Interfaces
 
         TEntity GetById(int id);
 
-        void Create(TEntity item);
+        bool Create(TEntity item);
 
-        void Update(int id, TEntity item);
+        bool Update(int id, TEntity item);
 
-        void Delete(int id);
+        bool Delete(int id);
     }
 }
