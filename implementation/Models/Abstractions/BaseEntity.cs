@@ -1,19 +1,24 @@
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace implementation.Models.Abstractions
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity : IEqualityComparer<BaseEntity>
     {
         public int Id { get; set; }
 
-        public DateTime CreatedAt { get; private set; }
+        public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
 
-        public BaseEntity(int id)
+        public bool Equals(BaseEntity? x, BaseEntity? y)
         {
-            Id = id;
+            return x.Id == y.Id;
+        }
 
-            CreatedAt = DateTime.Now;
+        public int GetHashCode([DisallowNull] BaseEntity obj)
+        {
+            return Id.GetHashCode();
         }
     }
 }

@@ -2,7 +2,7 @@ using implementation.Models.Abstractions;
 
 namespace implementation.Models
 {
-    public class Seller : BaseEntity
+    public class Seller
     {
         public string Name { get; set; }
 
