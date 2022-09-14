@@ -1,5 +1,5 @@
 using AutoMapper;
-using implementation.DataTransferObjects;
+using implementation.Data;
 using implementation.Models;
 
 namespace implementation.Infrastructure.Config

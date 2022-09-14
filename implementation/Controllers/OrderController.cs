@@ -1,7 +1,7 @@
-using AutoMapper;
-using implementation.DataTransferObjects;
+using implementation.Data;
+using implementation.Data.ResponseObjects;
 using implementation.Models;
-using implementation.Repositories.Interfaces;
+using implementation.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace implementation.Controllers
@@ -10,43 +10,53 @@ namespace implementation.Controllers
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
-        private readonly IRepository<Order> _repository;
+        private readonly IService<OrderDTO, ResultResponse> _service;
 
-        private readonly IMapper _mapper;
-
-        public OrderController(IRepository<Order> repository, IMapper mapper)
+        public OrderController(IService<OrderDTO, ResultResponse> service)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _service = service;
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var order = _repository.GetById(id);
+            var result = _service.GetById(id);
 
-            if(order == null)
-                return NotFound();
+            if (result.IsOk())
+                return Ok(result.Data);
 
-            return Ok(order);
+            return NotFound(result.Errors);
         }
 
         [HttpPost]
         public IActionResult Create([FromBody] OrderDTO item)
         {
-            var mappedItem = _mapper.Map<Order>(item);
-            
-            if(_repository.Create(_mapper.Map<Order>(mappedItem)))
-                return CreatedAtRoute("GetById", mappedItem.Id, item);
+            var result = _service.Create(item);
 
-            return BadRequest();
+            if (result.IsOk())
+                return Ok(result.Data);
+
+            return HandleResponseErrors(result.Errors, result.RequiredFields);
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] OrderDTO item)
         {
-            if(_repository.Update(id, _mapper.Map<Order>(item)))
-                return Ok();
+            var result = _service.Update(id, item);
+
+            if (result.IsOk())
+                return Ok("Venda alterada com sucesso");
+
+            return HandleResponseErrors(result.Errors, result.RequiredFields);
+        }
+
+        private IActionResult HandleResponseErrors(List<string> errorsList, List<string> requiredFieldsList)
+        {
+            if (errorsList.Any() || requiredFieldsList.Any())
+                return BadRequest(errorsList);
+
+            if (requiredFieldsList.Any())
+                return BadRequest(requiredFieldsList);
 
             return BadRequest();
         }
