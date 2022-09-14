@@ -1,5 +1,6 @@
 using implementation.Models;
 using implementation.Repositories.Abstractions;
+using static implementation.Utils.Helpers.RepositoryHelpers;
 
 namespace implementation.Repositories
 {
@@ -11,15 +12,19 @@ namespace implementation.Repositories
                 return;
 
             item.Status = Models.Enums.OrderStatus.WaitingPayment;
-            
+
             base.Create(item);
         }
 
         public override void Update(int id, Order item)
         {
-            if(item.Products.Count == 0)
+            if (item.Products.Count == 0)
                 return;
-            
+
+            var orderToChange = GetById(id);
+
+            if (!CanChangeOrderStatus(orderToChange.Status, item.Status))
+                return;
 
             base.Update(id, item);
         }
