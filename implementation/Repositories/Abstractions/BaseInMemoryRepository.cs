@@ -1,24 +1,21 @@
 using implementation.Models.Abstractions;
 using implementation.Repositories.Interfaces;
+using static implementation.Utils.Helpers.DataBaseHelpers;
 
 namespace implementation.Repositories.Abstractions
 {
     public class BaseInMemoryRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        private List<TEntity> _entities;
+        protected List<TEntity> _entities;
 
         public BaseInMemoryRepository()
         {
             _entities = new List<TEntity>();
-        } 
+        }
         public virtual void Create(TEntity item)
         {
-            var newId = 1;
-
-            if(GetAll().Count() > 0)
-                newId = _entities.Max(entity => entity.Id) + 1;
-
-            item.Id = newId;
+            item.Id = GetInMemoryCollectionNewId(_entities.Count > 0 ? _entities.Max(entity => entity.Id) : 0);
+            item.CreatedAt = DateTime.Now;
 
             _entities.Add(item);
         }
@@ -42,13 +39,14 @@ namespace implementation.Repositories.Abstractions
         {
             var entityToChange = GetById(id);
 
-            if(entityToChange == null)
+            if (entityToChange == null)
                 return;
 
-            entityToChange.UpdatedAt = DateTime.Now;
+            item.UpdatedAt = DateTime.Now;
 
             Delete(id);
-            Create(entityToChange);
+
+            _entities.Add(item);
         }
     }
 }
