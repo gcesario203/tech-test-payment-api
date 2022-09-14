@@ -52,11 +52,10 @@ namespace implementation.Controllers
 
         private IActionResult HandleResponseErrors(List<string> errorsList, List<string> requiredFieldsList)
         {
-            if (errorsList.Any() || requiredFieldsList.Any())
-                return BadRequest(errorsList);
+            errorsList.AddRange(requiredFieldsList);
 
-            if (requiredFieldsList.Any())
-                return BadRequest(requiredFieldsList);
+            if(errorsList.Any())
+                return BadRequest(errorsList);
 
             return BadRequest();
         }

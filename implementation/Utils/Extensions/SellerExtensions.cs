@@ -14,7 +14,10 @@ namespace implementation.Utils.Extensions
                 return;
             }
 
-            CheckRequiredFields(requiredFields, "Campo obrigatório", seller.Cpf, seller.Email, seller.Name, seller.Telphone);
+            var fieldNames = typeof(Seller).GetProperties().Select(x => x.Name);
+
+            foreach (var fieldName in fieldNames)
+                CheckRequiredFields(requiredFields, "Campo obrigatório", fieldName, seller.GetType().GetProperty(fieldName)?.GetValue(seller)?.ToString());
 
             if (!isValidEmail(seller.Email))
                 errors.Add("Email inválido");
@@ -23,11 +26,10 @@ namespace implementation.Utils.Extensions
                 errors.Add("Cpf inválido");
         }
 
-        private static void CheckRequiredFields(List<string> requiredFields, string message, params string[] fieldNames)
+        private static void CheckRequiredFields(List<string> requiredFields, string message, string fieldName, string fieldValue)
         {
-            foreach (var fieldName in fieldNames)
-                if (string.IsNullOrEmpty(fieldName))
-                    requiredFields.Add($"{message} '{fieldName}'");
+            if (string.IsNullOrEmpty(fieldValue))
+                requiredFields.Add($"{message} '{fieldName}'");
         }
     }
 }
