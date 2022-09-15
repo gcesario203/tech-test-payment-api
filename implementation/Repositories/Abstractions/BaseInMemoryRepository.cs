@@ -34,15 +34,9 @@ namespace implementation.Repositories.Abstractions
             return true;
         }
 
-        public virtual IEnumerable<TEntity> GetAll()
-        {
-            return _entities;
-        }
+        public virtual IEnumerable<TEntity> GetAll() => _entities;
 
-        public virtual TEntity GetById(int id)
-        {
-            return _entities.FirstOrDefault(entity => entity.Id == id);
-        }
+        public virtual TEntity GetById(int id) => _entities.FirstOrDefault(entity => entity.Id == id);
 
         public virtual bool Update(int id, TEntity item)
         {
@@ -60,6 +54,11 @@ namespace implementation.Repositories.Abstractions
             _entities.Add(item);
 
             return true;
+        }
+
+        public virtual bool UpdateField<TField>(int id, TField value)
+        {
+            throw new NotImplementedException();
         }
     }
 }

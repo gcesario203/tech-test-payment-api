@@ -1,4 +1,5 @@
 using implementation.Data.ResponseObjects.Interfaces;
+using implementation.Models.Enums;
 
 namespace implementation.Services.Interfaces
 {
@@ -13,5 +14,7 @@ namespace implementation.Services.Interfaces
         TResponse Update(int id, TDto item);
 
         TResponse Delete(int id);
+
+        TResponse UpdateStatus(int id, OrderStatus status);
     }
 }

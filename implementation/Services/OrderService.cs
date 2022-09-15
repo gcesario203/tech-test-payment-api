@@ -2,7 +2,9 @@
 using AutoMapper;
 using implementation.Data;
 using implementation.Data.ResponseObjects;
+using implementation.Data.ResponseObjects.Interfaces;
 using implementation.Models;
+using implementation.Models.Enums;
 using implementation.Repositories.Interfaces;
 using implementation.Services.Interfaces;
 using static implementation.Utils.Helpers.RepositoryHelpers;
@@ -32,7 +34,7 @@ namespace implementation.Services
             var mappedItem = _mapper.Map<Order>(item);
 
             _repository.Create(mappedItem);
-            
+
             result.SetData(mappedItem);
 
             return result;
@@ -105,6 +107,18 @@ namespace implementation.Services
                 result.SetErrors("Houve um erro ao efetivar a mudança");
 
             result.SetData(mappedItem);
+
+            return result;
+        }
+
+        public ResultResponse UpdateStatus(int id, OrderStatus status)
+        {
+            var result = new ResultResponse();
+
+            var updateResult = _repository.UpdateField<OrderStatus>(id, status);
+
+            if (!updateResult)
+                result.SetErrors("Houve um erro ao efetivar a mudança");
 
             return result;
         }

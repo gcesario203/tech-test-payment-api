@@ -5,6 +5,20 @@ namespace unitTests.Utils.Helpers
 {
     public static class OrderHelpers
     {
+
+        public static OrderDTO MockUser()
+        {
+            return new OrderDTO
+            {
+                Seller = new Seller
+                {
+                    Name = "Evelyn Vera Ester Assunção",
+                    Cpf = "71444185055",
+                    Email = "evelyn.vera.assuncao@hidrara.com.br",
+                    Telphone = "8335501389"
+                }
+            };
+        }
         public static IEnumerable<OrderDTO> GenerateOrders()
         {
             return new List<OrderDTO>

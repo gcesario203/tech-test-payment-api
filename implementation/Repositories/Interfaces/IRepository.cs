@@ -13,5 +13,7 @@ namespace implementation.Repositories.Interfaces
         bool Update(int id, TEntity item);
 
         bool Delete(int id);
+
+        bool UpdateField<TField>(int id, TField value);
     }
 }

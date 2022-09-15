@@ -1,6 +1,7 @@
 using implementation.Data;
 using implementation.Data.ResponseObjects;
 using implementation.Models;
+using implementation.Models.Enums;
 using implementation.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,9 +41,9 @@ namespace implementation.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] OrderDTO item)
+        public IActionResult Update(int id, [FromBody] OrderStatus status)
         {
-            var result = _service.Update(id, item);
+            var result = _service.UpdateStatus(id, status);
 
             if (result.IsOk())
                 return Ok("Venda alterada com sucesso");
