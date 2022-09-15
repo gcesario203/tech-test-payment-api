@@ -83,7 +83,7 @@ namespace unitTests
             var mockBuilder = new OrderMockBuilder();
 
             var result = (OkObjectResult)mockBuilder.OrderController.Update(4, OrderStatus.ApprovedPayment);
-            
+
             Assert.Equal(result.StatusCode, 200);
         }
 
@@ -93,27 +93,19 @@ namespace unitTests
             var mockBuilder = new OrderMockBuilder();
 
             var result = ChangeStatusPositiveTest(OrderStatus.RejectedPayment, ref mockBuilder);
-            
+
             Assert.Equal(result.StatusCode, 200);
         }
-        
+
         [Fact]
-        public void ShouldntSetPendingPaymentOrderToSended()
+        public void CannotSetPendingOrderToOtherStatusExceptRejectedOrApproved()
         {
             var mockBuilder = new OrderMockBuilder();
 
-            var result = ChangeStatusNegativeTest(OrderStatus.Sended, ref mockBuilder);
-            
-            Assert.Equal(result.StatusCode, 400);
-        }
+            var result = ChangeStatusNegativeTest(GetRandomOrderStatus(OrderStatus.ApprovedPayment,
+                                                                        OrderStatus.RejectedPayment),
+                                                  ref mockBuilder);
 
-        [Fact]
-        public void ShouldntSetPendingPaymentOrderToDelivered()
-        {
-            var mockBuilder = new OrderMockBuilder();
-
-            var result = ChangeStatusNegativeTest(OrderStatus.Delivered, ref mockBuilder);
-            
             Assert.Equal(result.StatusCode, 400);
         }
 
@@ -124,7 +116,54 @@ namespace unitTests
 
             ChangeStatusPositiveTest(OrderStatus.ApprovedPayment, ref mockBuilder);
             var result = ChangeStatusPositiveTest(OrderStatus.Sended, ref mockBuilder);
-            
+
+            Assert.Equal(result.StatusCode, 200);
+        }
+
+        [Fact]
+        public void ShouldAApprovedOrderBeSetToCanceled()
+        {
+            var mockBuilder = new OrderMockBuilder();
+
+            ChangeStatusPositiveTest(OrderStatus.ApprovedPayment, ref mockBuilder);
+            var result = ChangeStatusPositiveTest(OrderStatus.RejectedPayment, ref mockBuilder);
+
+            Assert.Equal(result.StatusCode, 200);
+        }
+
+        [Fact]
+        public void ShouldntSetApprovedOrderToDelivered()
+        {
+            var mockBuilder = new OrderMockBuilder();
+
+            ChangeStatusPositiveTest(OrderStatus.ApprovedPayment, ref mockBuilder);
+            var result = ChangeStatusNegativeTest(OrderStatus.Delivered, ref mockBuilder);
+
+            Assert.Equal(result.StatusCode, 400);
+        }
+
+        [Fact]
+        public void ShouldASendedOrderBeSetToDelivered()
+        {
+            var mockBuilder = new OrderMockBuilder();
+
+            ChangeStatusPositiveTest(OrderStatus.ApprovedPayment, ref mockBuilder);
+            ChangeStatusPositiveTest(OrderStatus.Sended, ref mockBuilder);
+            var result = ChangeStatusPositiveTest(OrderStatus.Delivered, ref mockBuilder);
+
+            Assert.Equal(result.StatusCode, 200);
+        }
+
+        [Fact]
+        public void ADeliveredOrderCannotBeChangedToAnyStatus()
+        {
+            var mockBuilder = new OrderMockBuilder();
+
+            ChangeStatusPositiveTest(OrderStatus.ApprovedPayment, ref mockBuilder);
+            ChangeStatusPositiveTest(OrderStatus.Sended, ref mockBuilder);
+            ChangeStatusPositiveTest(OrderStatus.Delivered, ref mockBuilder);
+            var result = ChangeStatusPositiveTest(OrderStatus.Delivered, ref mockBuilder);
+
             Assert.Equal(result.StatusCode, 200);
         }
     }

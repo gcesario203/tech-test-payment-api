@@ -9,6 +9,12 @@ namespace unitTests.Utils.Helpers
     public static class OrderHelpers
     {
 
+        public static OrderStatus GetRandomOrderStatus(params OrderStatus[] exceptions)
+        {
+            var values = Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>().Where(s => !exceptions.Contains(s)).ToList();
+            var random = new Random();
+            return values[random.Next(values.Count() - 1)];
+        }
         public static OkObjectResult ChangeStatusPositiveTest(OrderStatus newStatus, ref OrderMockBuilder mockBuilder)
             => (OkObjectResult)mockBuilder.OrderController.Update(4, newStatus);
         public static BadRequestObjectResult ChangeStatusNegativeTest(OrderStatus newStatus,

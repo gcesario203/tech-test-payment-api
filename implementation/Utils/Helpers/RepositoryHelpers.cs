@@ -6,9 +6,6 @@ namespace implementation.Utils.Helpers
     {
         public static bool CanChangeOrderStatus(OrderStatus orderStatus, OrderStatus newOrderStatus)
         {
-            if(orderStatus == newOrderStatus)
-                return true;
-
             if(orderStatus == OrderStatus.WaitingPayment && (newOrderStatus == OrderStatus.RejectedPayment || newOrderStatus == OrderStatus.ApprovedPayment))
                 return true;
 

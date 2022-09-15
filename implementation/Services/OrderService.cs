@@ -119,7 +119,7 @@ namespace implementation.Services
 
             if (orderToChange == null)
                 result.SetErrors("Venda não encontrada");
-            
+
             if (!CanChangeOrderStatus(orderToChange.Status, status))
             {
                 result.SetErrors($"Não é possivel alterar o status da venda {orderToChange.Id} de {orderToChange.Status.ToString()} para {status.ToString()}");
