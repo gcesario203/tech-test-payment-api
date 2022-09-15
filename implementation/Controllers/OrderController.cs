@@ -35,7 +35,7 @@ namespace implementation.Controllers
             var result = _service.Create(item);
 
             if (result.IsOk())
-                return Ok(result.Data);
+                return CreatedAtAction("", (Order)result.Data);
 
             return HandleResponseErrors(result.Errors, result.RequiredFields);
         }

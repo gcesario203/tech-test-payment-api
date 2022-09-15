@@ -76,5 +76,15 @@ namespace unitTests
 
             Assert.Equal(HandleActionResult<Order>(result).Status, OrderStatus.WaitingPayment);
         }
+
+        [Fact]
+        public void ShouldApproveAPendingPayment()
+        {
+            var mockBuilder = new OrderMockBuilder();
+
+            var result = (OkObjectResult)mockBuilder.OrderController.Update(4, OrderStatus.ApprovedPayment);
+            
+            Assert.Equal(result.StatusCode, 200);
+        }
     }
 }
