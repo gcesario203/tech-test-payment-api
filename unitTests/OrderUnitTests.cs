@@ -1,5 +1,6 @@
 using implementation.Models;
 using implementation.Models.Enums;
+using Microsoft.AspNetCore.Mvc;
 using unitTests.Utils.MockBuilders;
 using static implementation.Utils.Helpers.ControllerHelpers;
 using static unitTests.Utils.Helpers.OrderHelpers;
@@ -24,9 +25,9 @@ namespace unitTests
         {
             var mockBuilder = new OrderMockBuilder();
 
-            var result = mockBuilder.OrderController.GetById(35);
+            var result = (NotFoundObjectResult)mockBuilder.OrderController.GetById(35);
 
-            Assert.Equal(HandleActionResult<Order>(result), null);
+            Assert.Equal(result.StatusCode, 404);
         }
 
         [Fact]
@@ -48,9 +49,9 @@ namespace unitTests
 
             mockOrder.Products = null;
 
-            var result = mockBuilder.OrderController.Create(mockOrder);
+            var result = (BadRequestObjectResult)mockBuilder.OrderController.Create(mockOrder);
 
-            Assert.Equal(HandleActionResult<Order>(result), null);
+            Assert.Equal(result.StatusCode, 400);
         }
 
         [Fact]
@@ -58,13 +59,9 @@ namespace unitTests
         {
             var mockBuilder = new OrderMockBuilder();
 
-            var mockOrder = MockOrder();
+            var result = mockBuilder.OrderController.Create(MockOrder());
 
-            mockOrder.Products = null;
-
-            var result = mockBuilder.OrderController.Create(mockOrder);
-
-            Assert.Equal(HandleActionResult<Order>(result), null);
+            Assert.Equal(HandleActionResult<Order>(result).UpdatedAt, DateTime.MinValue);
         }
 
         [Fact]
