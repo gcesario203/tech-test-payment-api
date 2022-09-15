@@ -9,20 +9,11 @@ namespace unitTests.Utils.Helpers
     public static class OrderHelpers
     {
 
-        public static OkObjectResult ChangeStatusPositiveTest(OrderStatus newStatus)
-        {
-            var mockBuilder = new OrderMockBuilder();
-
-            return (OkObjectResult)mockBuilder.OrderController.Update(4, newStatus);
-        }
-        public static BadRequestObjectResult ChangeStatusNegativeTest(OrderStatus newStatus)
-        {
-            var mockBuilder = new OrderMockBuilder();
-
-            var result =  mockBuilder.OrderController.Update(4, newStatus);
-            return (BadRequestObjectResult)result;
-        }
-
+        public static OkObjectResult ChangeStatusPositiveTest(OrderStatus newStatus, ref OrderMockBuilder mockBuilder)
+            => (OkObjectResult)mockBuilder.OrderController.Update(4, newStatus);
+        public static BadRequestObjectResult ChangeStatusNegativeTest(OrderStatus newStatus,
+                                                                      ref OrderMockBuilder mockBuilder)
+             => (BadRequestObjectResult)mockBuilder.OrderController.Update(4, newStatus);
         public static OrderDTO MockOrder()
         {
             return new OrderDTO

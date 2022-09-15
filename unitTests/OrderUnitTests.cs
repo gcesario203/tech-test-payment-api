@@ -92,7 +92,7 @@ namespace unitTests
         {
             var mockBuilder = new OrderMockBuilder();
 
-            var result = ChangeStatusPositiveTest(OrderStatus.RejectedPayment);
+            var result = ChangeStatusPositiveTest(OrderStatus.RejectedPayment, ref mockBuilder);
             
             Assert.Equal(result.StatusCode, 200);
         }
@@ -102,7 +102,7 @@ namespace unitTests
         {
             var mockBuilder = new OrderMockBuilder();
 
-            var result = ChangeStatusNegativeTest(OrderStatus.Sended);
+            var result = ChangeStatusNegativeTest(OrderStatus.Sended, ref mockBuilder);
             
             Assert.Equal(result.StatusCode, 400);
         }
@@ -112,9 +112,20 @@ namespace unitTests
         {
             var mockBuilder = new OrderMockBuilder();
 
-            var result = ChangeStatusNegativeTest(OrderStatus.Delivered);
+            var result = ChangeStatusNegativeTest(OrderStatus.Delivered, ref mockBuilder);
             
             Assert.Equal(result.StatusCode, 400);
+        }
+
+        [Fact]
+        public void ShouldAApprovedOrderBeSetToSended()
+        {
+            var mockBuilder = new OrderMockBuilder();
+
+            ChangeStatusPositiveTest(OrderStatus.ApprovedPayment, ref mockBuilder);
+            var result = ChangeStatusPositiveTest(OrderStatus.Sended, ref mockBuilder);
+            
+            Assert.Equal(result.StatusCode, 200);
         }
     }
 }
