@@ -132,12 +132,14 @@ namespace unitTests
         }
 
         [Fact]
-        public void ShouldntSetApprovedOrderToDelivered()
+        public void ShouldntSetApprovedOrderToOtherStatusExceptForRejectOrSended()
         {
             var mockBuilder = new OrderMockBuilder();
 
             ChangeStatusPositiveTest(OrderStatus.ApprovedPayment, ref mockBuilder);
-            var result = ChangeStatusNegativeTest(OrderStatus.Delivered, ref mockBuilder);
+            var result = ChangeStatusNegativeTest(GetRandomOrderStatus(OrderStatus.RejectedPayment,
+                                                                       OrderStatus.Sended),
+                                                  ref mockBuilder);
 
             Assert.Equal(result.StatusCode, 400);
         }
@@ -162,9 +164,9 @@ namespace unitTests
             ChangeStatusPositiveTest(OrderStatus.ApprovedPayment, ref mockBuilder);
             ChangeStatusPositiveTest(OrderStatus.Sended, ref mockBuilder);
             ChangeStatusPositiveTest(OrderStatus.Delivered, ref mockBuilder);
-            var result = ChangeStatusPositiveTest(OrderStatus.Delivered, ref mockBuilder);
+            var result = ChangeStatusNegativeTest(GetRandomOrderStatus(), ref mockBuilder);
 
-            Assert.Equal(result.StatusCode, 200);
+            Assert.Equal(result.StatusCode, 400);
         }
     }
 }
