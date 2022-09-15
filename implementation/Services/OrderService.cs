@@ -115,6 +115,18 @@ namespace implementation.Services
         {
             var result = new ResultResponse();
 
+            var orderToChange = _repository.GetById(id);
+
+            if (orderToChange == null)
+                result.SetErrors("Venda não encontrada");
+            
+            if (!CanChangeOrderStatus(orderToChange.Status, status))
+            {
+                result.SetErrors($"Não é possivel alterar o status da venda {orderToChange.Id} de {orderToChange.Status.ToString()} para {status.ToString()}");
+
+                return result;
+            }
+
             var updateResult = _repository.UpdateField<OrderStatus>(id, status);
 
             if (!updateResult)

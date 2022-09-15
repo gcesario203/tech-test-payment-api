@@ -86,5 +86,35 @@ namespace unitTests
             
             Assert.Equal(result.StatusCode, 200);
         }
+
+        [Fact]
+        public void ShouldRejectAPendingPayment()
+        {
+            var mockBuilder = new OrderMockBuilder();
+
+            var result = ChangeStatusPositiveTest(OrderStatus.RejectedPayment);
+            
+            Assert.Equal(result.StatusCode, 200);
+        }
+        
+        [Fact]
+        public void ShouldntSetPendingPaymentOrderToSended()
+        {
+            var mockBuilder = new OrderMockBuilder();
+
+            var result = ChangeStatusNegativeTest(OrderStatus.Sended);
+            
+            Assert.Equal(result.StatusCode, 400);
+        }
+
+        [Fact]
+        public void ShouldntSetPendingPaymentOrderToDelivered()
+        {
+            var mockBuilder = new OrderMockBuilder();
+
+            var result = ChangeStatusNegativeTest(OrderStatus.Delivered);
+            
+            Assert.Equal(result.StatusCode, 400);
+        }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace implementation.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class OrderController : ControllerBase
     {
         private readonly IService<OrderDTO, ResultResponse> _service;
@@ -35,7 +35,11 @@ namespace implementation.Controllers
             var result = _service.Create(item);
 
             if (result.IsOk())
-                return CreatedAtAction("", (Order)result.Data);
+            {
+                var newOrder = (Order)result.Data;
+
+                return Created("api/Order/GetById", newOrder);
+            }
 
             return HandleResponseErrors(result.Errors, result.RequiredFields);
         }
@@ -55,7 +59,7 @@ namespace implementation.Controllers
         {
             errorsList.AddRange(requiredFieldsList);
 
-            if(errorsList.Any())
+            if (errorsList.Any())
                 return BadRequest(errorsList);
 
             return BadRequest();

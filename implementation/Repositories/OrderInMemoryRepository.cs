@@ -16,15 +16,12 @@ namespace implementation.Repositories
 
         public override bool UpdateField<TField>(int id, TField value)
         {
-            if(!(value is OrderStatus))
+            if (!(value is OrderStatus))
                 return false;
-
-            var formatedValue = GetValue<OrderStatus>(value);
 
             var itemToChange = GetById(id);
 
-            if(itemToChange == null)
-                return false;
+            var formatedValue = GetValue<OrderStatus>(value);
 
             itemToChange.Status = formatedValue;
 
