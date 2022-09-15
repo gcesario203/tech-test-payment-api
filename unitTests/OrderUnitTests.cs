@@ -34,30 +34,48 @@ namespace unitTests
         {
             var mockBuilder = new OrderMockBuilder();
 
-            var result = mockBuilder.OrderController.Create(MockUser());
+            var result = mockBuilder.OrderController.Create(MockOrder());
 
             Assert.Equal(HandleActionResult<Order>(result).Id, 5);
         }
 
         [Fact]
-        public void Should()
+        public void ShouldntCreateOrderWithoutProducts()
         {
             var mockBuilder = new OrderMockBuilder();
 
-            var result = mockBuilder.OrderController.Create(MockUser());
+            var mockOrder = MockOrder();
 
-            Assert.Equal(HandleActionResult<Order>(result).Id, 5);
+            mockOrder.Products = null;
+
+            var result = mockBuilder.OrderController.Create(mockOrder);
+
+            Assert.Equal(HandleActionResult<Order>(result), null);
+        }
+
+        [Fact]
+        public void ANewUserHasToHaveDefaultDateTimeAtFieldUpdatedAt()
+        {
+            var mockBuilder = new OrderMockBuilder();
+
+            var mockOrder = MockOrder();
+
+            mockOrder.Products = null;
+
+            var result = mockBuilder.OrderController.Create(mockOrder);
+
+            Assert.Equal(HandleActionResult<Order>(result), null);
         }
 
         [Fact]
         public void ShouldTheNewUserStartWithPendingPaymentStatus()
         {
             var mockBuilder = new OrderMockBuilder();
-            var mockUser = MockUser();
+            var mockOrder = MockOrder();
 
-            mockUser.Status = OrderStatus.ApprovedPayment;
+            mockOrder.Status = OrderStatus.ApprovedPayment;
 
-            var result = mockBuilder.OrderController.Create(mockUser);
+            var result = mockBuilder.OrderController.Create(mockOrder);
 
             Assert.Equal(HandleActionResult<Order>(result).Status, OrderStatus.WaitingPayment);
         }

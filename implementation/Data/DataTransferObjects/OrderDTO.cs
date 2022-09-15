@@ -18,7 +18,7 @@ namespace implementation.Data
         {
             Seller.ValidateSeller(response.Errors, response.RequiredFields);
             
-            if(Products?.Count == 0)
+            if(Products == null || Products?.Count == 0)
                 response.SetErrors("É necessário ter pelo menos um produto na venda");
         }
 

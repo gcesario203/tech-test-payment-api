@@ -5,6 +5,6 @@ namespace implementation.Utils.Helpers
 {
     public static class ControllerHelpers
     {
-        public static T HandleActionResult<T>(IActionResult result) => GetValue<T>("Value");
+        public static T HandleActionResult<T>(IActionResult result) => GetValue<T>(result, "Value");
     }
 }

@@ -6,7 +6,7 @@ namespace unitTests.Utils.Helpers
     public static class OrderHelpers
     {
 
-        public static OrderDTO MockUser()
+        public static OrderDTO MockOrder()
         {
             return new OrderDTO
             {
@@ -16,7 +16,11 @@ namespace unitTests.Utils.Helpers
                     Cpf = "71444185055",
                     Email = "evelyn.vera.assuncao@hidrara.com.br",
                     Telphone = "8335501389"
-                }
+                },
+                Products = new List<Product>
+                                {
+                                    new Product{ Name = "Seguro veícular Vectra 2000 com cobertura reduzida", Price = 1800.00M}
+                                },
             };
         }
         public static IEnumerable<OrderDTO> GenerateOrders()
